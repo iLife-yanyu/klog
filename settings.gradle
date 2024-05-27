@@ -1,0 +1,16 @@
+pluginManagement {
+    apply from: 'maven.gradle'
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        addCommonMaven(repositories)
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        addCommonMaven(repositories)
+    }
+}
+include ':app'
+include ':klog'
