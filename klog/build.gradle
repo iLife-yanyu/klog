@@ -1,13 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'maven-publish'
 }
 
-group = GROUP_ID
-version = LIBRARY_VERSION
-// 执行命令将包发布到本地的maven仓库
-// ./gradlew publishToMavenLocal
+apply from: "mvn-config.gradle"
 
 ext {
     min_sdk = 19
@@ -31,22 +27,5 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
-}
-
-afterEvaluate {
-    android.libraryVariants.each { variant ->
-        publishing.publications.create(variant.name, MavenPublication) {
-            from components.findByName(variant.name)
-            groupId = GROUP_ID // 这个是依赖库的组 id
-            artifactId = ARTIFACT_ID // 依赖库的名称（jitpack 都不会使用到）
-            version = LIBRARY_VERSION // 当前版本依赖库版本号，这个jitpack不会使用到，只是我们开发者自己查看
-        }
     }
 }
