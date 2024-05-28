@@ -4,11 +4,12 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.yanyu.klog'
-version = '1.0'
-
+group = GROUP_ID
+version = LIBRARY_VERSION
+// 执行命令将包发布到本地的maven仓库
+// ./gradlew publishToMavenLocal
 android {
-    namespace 'com.yanyu.klog'
+    namespace GROUP_ID
     compileSdk 33
 
     defaultConfig {
@@ -37,10 +38,9 @@ afterEvaluate {
     android.libraryVariants.each { variant ->
         publishing.publications.create(variant.name, MavenPublication) {
             from components.findByName(variant.name)
-            groupId = 'com.yanyu.klog' // 这个是依赖库的组 id
-            artifactId = 'klog' // 依赖库的名称（jitpack 都不会使用到）
-            version = "1.0.0" // 当前版本依赖库版本号，这个jitpack不会使用到，只是我们开发者自己查看
+            groupId = GROUP_ID // 这个是依赖库的组 id
+            artifactId = ARTIFACT_ID // 依赖库的名称（jitpack 都不会使用到）
+            version = LIBRARY_VERSION // 当前版本依赖库版本号，这个jitpack不会使用到，只是我们开发者自己查看
         }
-
     }
 }
