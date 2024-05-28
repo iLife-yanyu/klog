@@ -7,8 +7,24 @@ abstract class ConsoleConfig(internal val prefixTag: String? = null) {
 
     internal val disablePrefixTag: Boolean = prefixTag.isNullOrEmpty()
 
-    open val defaultTag: String = KLog.javaClass.simpleName
-    open val defaultMessage: String = "execute"
-    open val ableShowLog: Boolean = true
-    open val jsonIndent = 4
+    val defaultTag: String by lazy { configDefaultTag() }
+    val defaultMessage: String by lazy { configDefaultMessage() }
+    val ableShowLog: Boolean by lazy { configAbleShowLog() }
+    val jsonIndent: Int by lazy { configJsonIndent() }
+
+    open fun configDefaultTag(): String {
+        return KLog.javaClass.simpleName
+    }
+
+    open fun configDefaultMessage(): String {
+        return "execute"
+    }
+
+    open fun configAbleShowLog(): Boolean {
+        return true
+    }
+
+    open fun configJsonIndent(): Int {
+        return 4
+    }
 }

@@ -14,14 +14,15 @@ object KLog {
     private const val STACK_TRACE_INDEX_5 = 5
     private const val STACK_TRACE_INDEX_4 = 4
 
-    fun init(consoleConfigImpl: ConsoleConfig, fileConfigImpl: FileConfig,
-        // 删除阈值，传入负数则不删除，默认删除三天前的日志文件
-             deleteThreshold: Int = 1000 * 60 * 60 * 24 * 3) {
-        this.config = consoleConfigImpl
-        this.fileConfig = fileConfigImpl
-        if (deleteThreshold > 0) {
-            DeleteFileRunnable.start(fileConfigImpl.logDirectory, deleteThreshold)
-        }
+    /**
+     * @param console   日志控制台的配置，不能为空
+     * @param file      日志文件的配置，可以为空
+     * @param deleteTask  删除指定时间节点前的文件
+     */
+    fun init(console: ConsoleConfig, file: FileConfig? = null, deleteTask: DeleteLogsTask? = null) {
+        this.config = console
+        this.fileConfig = file
+        deleteTask?.start()
     }
 
     fun v() {
@@ -175,7 +176,7 @@ object KLog {
         printStackTrace()
     }
 
-    fun getLogFile(): File {
+    fun getLogDirectoryFile(): File {
         return File(fileConfig?.logDirectory ?: "")
     }
 

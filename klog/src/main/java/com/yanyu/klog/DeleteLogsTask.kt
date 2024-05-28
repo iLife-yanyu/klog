@@ -2,16 +2,22 @@ package com.yanyu.klog
 
 import java.io.File
 
-internal class DeleteFileRunnable constructor(
-    // 路径
-    private val logPath: String,
-    // 阈值
-    private val threshold: Int) : Runnable {
+/**
+ * 删除指定路径下的 days 天前的日志文件，默认3天前
+ */
+class DeleteLogsTask(private val logPath: String, days: Int = 3) : Runnable {
 
+    private val threshold: Long
     private val sysTime = System.currentTimeMillis()
+
+    init {
+        if (days < 1) {
+            throw RuntimeException("threshold must be greater than 1 day")
+        }
+        threshold = days * 1000L * 60 * 60 * 24
+    }
+
     /**
-     * 删除3天前的日志
-     *
      * @param file 一定是文件类型
      */
     private fun checkDeleteFile(file: File) {
@@ -45,19 +51,15 @@ internal class DeleteFileRunnable constructor(
     override fun run() {
         try {
             val file = File(logPath)
-            if (!file.exists()) {
-                return
+            if (file.exists()) {
+                checkFileType(file)
             }
-            checkFileType(file)
         }
         catch (ignored: Throwable) {
         }
     }
 
-    companion object {
-
-        internal fun start(logDirectory: String, deleteThreshold: Int) {
-            Thread(DeleteFileRunnable(logDirectory, deleteThreshold)).start()
-        }
+    fun start() {
+        Thread(this).start()
     }
 }
