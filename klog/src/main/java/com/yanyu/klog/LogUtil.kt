@@ -76,10 +76,10 @@ internal object LogUtil {
 
     fun write2file(tag: String?, targetDirectory: File, fileName: String, headString: String, msg: String) {
         if (write(targetDirectory, fileName, msg)) {
-            Log.d(tag, headString + " save log success! location is >>> " + targetDirectory.absolutePath + "/" + fileName)
+            Log.d("KLogFileImpl", "$tag $headString save log success! location is >>> " + targetDirectory.absolutePath + "/" + fileName)
         }
         else {
-            Log.e(tag, "$headString save log failed!")
+            Log.e("KLogFileImpl", "$tag $headString save log failed!")
         }
     }
 
@@ -101,6 +101,8 @@ internal object LogUtil {
         }
         catch (e: Exception) {
             e.printStackTrace()
+            val logInfo = LogInfo.newInstance(2, "KLogFileImpl", "error on ${e.message ?: "empty"}")
+            LogImpl.E.log(logInfo)
             false
         }
         finally {

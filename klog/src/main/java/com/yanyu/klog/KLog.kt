@@ -312,7 +312,9 @@ object KLog {
      */
     @JvmStatic
     fun mkdirsOfLog(context: Context): String {
-        return mkdirs("${context.filesDir.path}/${context.packageName}/files/klogs")
+        val fileDirs = context.filesDir.path
+        // fileDirs = /data/user/0/yourPackageName/files
+        return mkdirs("$fileDirs/klogs")
     }
 }
 
