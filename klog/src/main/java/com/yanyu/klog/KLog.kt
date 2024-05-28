@@ -2,6 +2,7 @@ package com.yanyu.klog
 
 import com.yanyu.klog.config.ConsoleConfig
 import com.yanyu.klog.config.FileConfig
+import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -13,9 +14,14 @@ object KLog {
     private const val STACK_TRACE_INDEX_5 = 5
     private const val STACK_TRACE_INDEX_4 = 4
 
-    fun init(consoleConfigImpl: ConsoleConfig, fileConfigImpl: FileConfig) {
+    fun init(consoleConfigImpl: ConsoleConfig, fileConfigImpl: FileConfig,
+        // 删除阈值，传入负数则不删除，默认删除三天前的日志文件
+             deleteThreshold: Int = 1000 * 60 * 60 * 24 * 3) {
         this.config = consoleConfigImpl
         this.fileConfig = fileConfigImpl
+        if (deleteThreshold > 0) {
+            DeleteFileRunnable.start(fileConfigImpl.logDirectory, deleteThreshold)
+        }
     }
 
     fun v() {
@@ -157,8 +163,20 @@ object KLog {
         }
     }
 
+    fun extendLog(clazz: Class<*>) {
+        if (config?.ableShowLog != true) {
+            return
+        }
+        val msg = "[ (" + clazz.getSimpleName() + LogInfo.getFileSuffix(clazz) + ":1) ] extends "
+        printLog(LogImpl.I, null, msg)
+    }
+
     fun trace() {
         printStackTrace()
+    }
+
+    fun getLogFile(): File {
+        return File(fileConfig?.logDirectory ?: "")
     }
 
     private fun printStackTrace() {

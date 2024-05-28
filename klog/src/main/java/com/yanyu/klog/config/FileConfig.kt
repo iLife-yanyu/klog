@@ -39,11 +39,11 @@ abstract class FileConfig constructor(val logDirectory: String) {
 
     /**
      * 返回可以输出到日志文件的日志级别
-     * example { KLogConfig.E or KLogConfig.W }
+     * example { LogLevel.E or LogLevel.W }
      * @return
      */
     protected open fun getAbleLogLevels(): Int {
-        return 0
+        return LogLevel.E or LogLevel.W
     }
 
     fun ableLogFile(level: Int): Boolean {

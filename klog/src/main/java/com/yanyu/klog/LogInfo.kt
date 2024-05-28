@@ -22,7 +22,7 @@ internal class LogInfo private constructor(val tag: String, val msg: String, val
             return LogInfo(tag, msg, headString)
         }
 
-        fun getFileSuffix(javaClass: Class<StackTraceElement>): String {
+        fun getFileSuffix(javaClass: Class<*>): String {
             return if (isKotlinClass(javaClass)) {
                 ".kt"
             }
