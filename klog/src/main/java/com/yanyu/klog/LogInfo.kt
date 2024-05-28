@@ -5,6 +5,14 @@ import com.yanyu.klog.config.ConsoleConfig
 
 internal class LogInfo private constructor(val tag: String, val msg: String, val headString: String) {
 
+    fun withLogInfo(): String {
+        return headString + msg
+    }
+
+    fun withExtendInfo(): String {
+        return msg + headString
+    }
+
     companion object {
 
         private const val PARAM = "Param"
@@ -25,13 +33,15 @@ internal class LogInfo private constructor(val tag: String, val msg: String, val
             return LogInfo(tag, msg, headString)
         }
 
-        fun getFileSuffix(javaClass: Class<*>): String {
-            return if (isKotlinClass(javaClass)) {
-                ".kt"
+        fun getJavaOrKt(clazz: Class<Any>): String {
+            val annotations = clazz.annotations
+            for (annotation in annotations) {
+                val toString = annotation.toString()
+                if (toString.contains("kotlin")) {
+                    return ".kt"
+                }
             }
-            else {
-                ".java"
-            }
+            return ".java"
         }
 
         private fun getObjectsString(vararg objects: Any): String {
@@ -57,14 +67,22 @@ internal class LogInfo private constructor(val tag: String, val msg: String, val
             if (this == null) {
                 return tag
             }
-            return if (disablePrefixTag && TextUtils.isEmpty(tag)) {
-                defaultTag
-            }
-            else if (!disablePrefixTag) {
-                prefixTag!!
+            val emptyCurrentTag = TextUtils.isEmpty(tag)
+            if (disablePrefixTag) {
+                return if (emptyCurrentTag) {
+                    defaultTag
+                }
+                else {
+                    tag
+                }
             }
             else {
-                tag
+                return if (emptyCurrentTag) {
+                    defaultTag
+                }
+                else {
+                    "$prefixTag-$tag"
+                }
             }
         }
     }

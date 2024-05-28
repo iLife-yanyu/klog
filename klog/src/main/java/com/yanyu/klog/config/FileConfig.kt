@@ -9,9 +9,8 @@ import java.util.Date
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-abstract class FileConfig constructor(val logDirectory: String) {
+abstract class FileConfig constructor(val logDirectory: String) : AbstractConfig() {
 
-    private val logLevels: Int by lazy(LazyThreadSafetyMode.NONE) { getAbleLogLevels() }
     private val executor: ExecutorService by lazy(LazyThreadSafetyMode.NONE) { newSingleThreadExecutor() }
     private val nameFormat: SimpleDateFormat by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { getFileNameFormat() }
     private val timeFormat: SimpleDateFormat by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { getLogTimeFormat() }
@@ -42,19 +41,15 @@ abstract class FileConfig constructor(val logDirectory: String) {
      * example { LogLevel.E or LogLevel.W }
      * @return
      */
-    protected open fun getAbleLogLevels(): Int {
+    override fun configAbleLogLevels(): Int {
         return LogLevel.E or LogLevel.W
-    }
-
-    fun ableLogFile(level: Int): Boolean {
-        return logLevels and level == level
     }
 
     internal fun log2file(level: LogImpl, logInfo: LogInfo, fileName: String? = null) {
         executor.execute(WriteFileRunnable(this, level, logInfo, fileName))
     }
 
-    open fun encapsulationFileName(logLevel: String, logTime: Date): String {
+    open fun encapsulationFileName(logTime: Date): String {
         return "${nameFormat.format(logTime)}.txt"
     }
 

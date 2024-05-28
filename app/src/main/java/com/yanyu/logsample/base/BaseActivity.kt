@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.yanyu.klog.KLog
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), UIOpt<VB> {
 
@@ -14,6 +15,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), UIOpt<VB> {
         binding = getViewBinding(layoutInflater)
         setContentView(binding.root)
         initUserInterface()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        KLog.extendLog(javaClass)
     }
 
     final override fun initUserInterface() {

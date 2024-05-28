@@ -56,6 +56,16 @@ internal enum class LogImpl(val level: Int) {
         override fun logImpl(tag: String, msg: String) {
             Log.e(tag, msg)
         }
+    },
+    EXTEND(LogLevel.EXTEND) {
+
+        override fun logImpl(tag: String, msg: String) {
+            Log.i(tag, msg)
+        }
+
+        override fun log(logInfo: LogInfo) {
+            LogUtil.printLogInfo(this, logInfo.tag, logInfo.withExtendInfo())
+        }
     };
 
     open fun logImpl(tag: String, msg: String) {
@@ -63,6 +73,6 @@ internal enum class LogImpl(val level: Int) {
     }
 
     open fun log(logInfo: LogInfo) {
-        LogUtil.printLogInfo(this, logInfo)
+        LogUtil.printLogInfo(this, logInfo.tag, logInfo.withLogInfo())
     }
 }

@@ -1,10 +1,14 @@
 package com.yanyu.klog
 
+import android.content.Context
 import com.yanyu.klog.config.ConsoleConfig
 import com.yanyu.klog.config.FileConfig
+import com.yanyu.klog.config.LogLevel
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.util.Date
+import java.util.LinkedList
 
 @Suppress("unused")
 object KLog {
@@ -194,22 +198,17 @@ object KLog {
     }
 
     @JvmStatic
-    fun extendLog(clazz: Class<*>) {
-        if (config?.ableShowLog != true) {
+    fun extendLog(clazz: Class<Any>) {
+        if (config?.ableLogFile(LogLevel.EXTEND) != true) {
             return
         }
-        val msg = "[ (" + clazz.getSimpleName() + LogInfo.getFileSuffix(clazz) + ":1) ] extends "
-        printLog(LogImpl.I, null, msg)
+        val msg = "[ (" + clazz.getSimpleName() + LogInfo.getJavaOrKt(clazz) + ":1) ] extends "
+        printLog(LogImpl.EXTEND, "extendLog", msg)
     }
 
     @JvmStatic
     fun trace() {
         printStackTrace()
-    }
-
-    @JvmStatic
-    fun getLogDirectoryFile(): File {
-        return File(fileConfig?.logDirectory ?: "")
     }
 
     @JvmStatic
@@ -235,7 +234,7 @@ object KLog {
 
     @JvmStatic
     private fun printLog(level: LogImpl, tagStr: String?, vararg objects: Any) {
-        if (config?.ableShowLog == true) {
+        if (config?.ableLogFile(level.level) == true) {
             val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_5, tagStr, *objects)
             level.log(logInfo)
             val fileConfig = fileConfig ?: return
@@ -262,7 +261,58 @@ object KLog {
     private fun printFile(tagStr: String?, fileName: String?, objectMsg: Any) {
         val fileConfig = fileConfig ?: return
         val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_5, tagStr, objectMsg)
-        fileConfig.log2file(LogImpl.F, logInfo, fileName ?: "KLog.txt")
+        fileConfig.log2file(LogImpl.F, logInfo, fileName)
+    }
+
+    @JvmStatic
+    fun getLogDirectory(): File? {
+        val fileConfig = fileConfig ?: return null
+        val logDirectory = fileConfig.logDirectory
+        return File(logDirectory)
+    }
+
+    @JvmStatic
+    fun getLogFileToday(): File? {
+        val logDirectory = getLogDirectory() ?: return null
+        val fileName = fileConfig?.encapsulationFileName(Date()) ?: return null
+        return File(logDirectory, fileName)
+    }
+
+    @JvmStatic
+    fun getLogFileList(): ArrayList<File>? {
+        val logDirectory = getLogDirectory() ?: return null
+        val listFiles = logDirectory.listFiles() ?: return null
+        val linkList = LinkedList<File>()
+        listFiles.forEach {
+            if (it.isFile) {
+                linkList.add(it)
+            }
+        }
+        return ArrayList(linkList)
+    }
+
+    @JvmStatic
+    fun mkdirs(path: String): String {
+        try {
+            val file = File(path)
+            if (!file.exists()) {
+                val mkdirs = file.mkdirs()
+                LogImpl.D.logImpl("LogPathKtx", "$path create ok is $mkdirs")
+            }
+        }
+        catch (e: Throwable) {
+            e.printStackTrace()
+            LogImpl.E.logImpl("LogPathKtx", "$path create on exception $e")
+        }
+        return path
+    }
+
+    /**
+     * 会自动创建该路径下的所有文件夹
+     */
+    @JvmStatic
+    fun mkdirsOfLog(context: Context): String {
+        return mkdirs("${context.filesDir.path}/${context.packageName}/files/klogs")
     }
 }
 

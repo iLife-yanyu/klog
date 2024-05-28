@@ -25,13 +25,14 @@ internal class WriteFileRunnable(
             write2file(file)
         }
         else {
-            LogUtil.printLogInfo(LogImpl.E, LogInfo.newInstance(2, "LogFileConfig", "log2fileImpl mkdirs failed"))
+            val info = LogInfo.newInstance(2, "LogFileConfig", "log2fileImpl mkdirs failed")
+            LogUtil.printLogInfo(LogImpl.E, info.tag, info.withLogInfo())
         }
     }
 
     private fun checkFileName(): String {
         return if (fileName.isNullOrEmpty()) {
-            fileConfig.encapsulationFileName(level.name, logTime)
+            fileConfig.encapsulationFileName(logTime)
         }
         else {
             fileName

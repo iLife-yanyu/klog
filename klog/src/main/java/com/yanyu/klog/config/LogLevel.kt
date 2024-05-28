@@ -25,4 +25,7 @@ object LogLevel {
 
     @JvmStatic
     val F = 1 shl 7 // FILE
+
+    @JvmStatic
+    val EXTEND = 1 shl 8 // 继承类关系
 }

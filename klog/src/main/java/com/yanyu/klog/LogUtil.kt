@@ -16,9 +16,7 @@ internal object LogUtil {
     private val LINE_SEPARATOR: String = System.getProperty("line.separator") ?: "/"
     private const val MAX_LENGTH = 4000
 
-    fun printLogInfo(level: LogImpl, logInfo: LogInfo) {
-        val tag = logInfo.tag
-        val msg = logInfo.headString + logInfo.msg
+    fun printLogInfo(level: LogImpl, tag: String, msg: String) {
         var index = 0
         val length = msg.length
         val countOfSub = length / MAX_LENGTH
