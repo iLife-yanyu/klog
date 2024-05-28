@@ -107,14 +107,16 @@ internal object LogUtil {
         }
         finally {
             try {
-                outputStream?.close()
                 outputStreamWriter?.let {
                     it.flush()
                     it.close()
                 }
+                outputStream?.close()
             }
-            catch (_: Throwable) {
-
+            catch (e: Throwable) {
+                e.printStackTrace()
+                val logInfo = LogInfo.newInstance(2, "KLogFileImpl", "error on ${e.message ?: "empty"}")
+                LogImpl.E.log(logInfo)
             }
         }
     }
