@@ -1,8 +1,6 @@
 package com.yanyu.klog
 
 import android.content.Context
-import android.text.TextUtils
-import com.yanyu.klog.config.ConsoleConfig
 import java.io.File
 
 /**
@@ -16,21 +14,6 @@ internal fun isKotlinClass(obj: Any): Boolean {
         }
     }
     return false
-}
-
-fun ConsoleConfig?.getTag(tag: String): String {
-    if (this == null) {
-        return tag
-    }
-    return if (disablePrefixTag && TextUtils.isEmpty(tag)) {
-        defaultTag
-    }
-    else if (!disablePrefixTag) {
-        prefixTag!!
-    }
-    else {
-        tag
-    }
 }
 
 private fun mkdirs(path: String): String {

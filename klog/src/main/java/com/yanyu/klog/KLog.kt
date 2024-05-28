@@ -9,7 +9,9 @@ import java.io.StringWriter
 @Suppress("unused")
 object KLog {
 
+    @JvmStatic
     internal var config: ConsoleConfig? = null
+    @JvmStatic
     private var fileConfig: FileConfig? = null
     private const val STACK_TRACE_INDEX_5 = 5
     private const val STACK_TRACE_INDEX_4 = 4
@@ -19,20 +21,24 @@ object KLog {
      * @param file      日志文件的配置，可以为空
      * @param deleteTask  删除指定时间节点前的文件
      */
+    @JvmStatic
     fun init(console: ConsoleConfig, file: FileConfig? = null, deleteTask: DeleteLogsTask? = null) {
         this.config = console
         this.fileConfig = file
         deleteTask?.start()
     }
 
+    @JvmStatic
     fun v() {
         printLog(LogImpl.V, null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun v(msg: Any?) {
         printLog(LogImpl.V, null, msg!!)
     }
 
+    @JvmStatic
     fun v(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printLog(LogImpl.V, null, tag)
@@ -42,14 +48,17 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun d() {
         printLog(LogImpl.D, null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun d(msg: Any?) {
         printLog(LogImpl.D, null, msg!!)
     }
 
+    @JvmStatic
     fun d(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printLog(LogImpl.D, null, tag)
@@ -59,14 +68,17 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun i() {
         printLog(LogImpl.I, null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun i(msg: Any?) {
         printLog(LogImpl.I, null, msg!!)
     }
 
+    @JvmStatic
     fun i(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printLog(LogImpl.I, null, tag)
@@ -76,14 +88,17 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun w() {
         printLog(LogImpl.W, null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun w(msg: Any?) {
         printLog(LogImpl.W, null, msg!!)
     }
 
+    @JvmStatic
     fun w(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printLog(LogImpl.W, null, tag)
@@ -93,14 +108,17 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun e() {
         printLog(LogImpl.E, null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun e(msg: Any?) {
         printLog(LogImpl.E, null, msg!!)
     }
 
+    @JvmStatic
     fun e(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printLog(LogImpl.E, null, tag)
@@ -110,14 +128,17 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun a() {
         printLog(LogImpl.A, null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun a(msg: Any?) {
         printLog(LogImpl.A, null, msg!!)
     }
 
+    @JvmStatic
     fun a(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printLog(LogImpl.A, null, tag)
@@ -127,34 +148,42 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun json(jsonFormat: String) {
         printLog(LogImpl.J, null, jsonFormat)
     }
 
+    @JvmStatic
     fun json(tag: String, jsonFormat: String) {
         printLog(LogImpl.J, tag, jsonFormat)
     }
 
+    @JvmStatic
     fun file(msg: Any) {
         printFile(null, null, msg)
     }
 
+    @JvmStatic
     fun file(tag: String, msg: Any) {
         printFile(tag, null, msg)
     }
 
+    @JvmStatic
     fun file(tag: String, fileName: String, msg: Any) {
         printFile(tag, fileName, msg)
     }
 
+    @JvmStatic
     fun debug() {
         printDebug(null, config.iGetDefaultMessage())
     }
 
+    @JvmStatic
     fun debug(msg: Any?) {
         printDebug(null, msg!!)
     }
 
+    @JvmStatic
     fun debug(tag: String?, vararg objects: Any) {
         if (!tag.isNullOrEmpty() && objects.isEmpty()) {
             printDebug(null, tag)
@@ -164,6 +193,7 @@ object KLog {
         }
     }
 
+    @JvmStatic
     fun extendLog(clazz: Class<*>) {
         if (config?.ableShowLog != true) {
             return
@@ -172,14 +202,17 @@ object KLog {
         printLog(LogImpl.I, null, msg)
     }
 
+    @JvmStatic
     fun trace() {
         printStackTrace()
     }
 
+    @JvmStatic
     fun getLogDirectoryFile(): File {
         return File(fileConfig?.logDirectory ?: "")
     }
 
+    @JvmStatic
     private fun printStackTrace() {
         val tr = Throwable()
         val sw = StringWriter()
@@ -200,6 +233,7 @@ object KLog {
         LogImpl.D.log(logInfo)
     }
 
+    @JvmStatic
     private fun printLog(level: LogImpl, tagStr: String?, vararg objects: Any) {
         if (config?.ableShowLog == true) {
             val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_5, tagStr, *objects)
@@ -218,11 +252,13 @@ object KLog {
         }
     }
 
+    @JvmStatic
     private fun printDebug(tagStr: String?, vararg objects: Any) {
         val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_5, tagStr, *objects)
         LogImpl.D.log(logInfo)
     }
 
+    @JvmStatic
     private fun printFile(tagStr: String?, fileName: String?, objectMsg: Any) {
         val fileConfig = fileConfig ?: return
         val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_5, tagStr, objectMsg)

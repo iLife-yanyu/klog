@@ -41,6 +41,6 @@ internal class WriteFileRunnable(
     private fun write2file(file: File) {
         val fileName: String = checkFileName()
         val msg = fileConfig.encapsulationLogMsg(level.name, logInfo.tag, logInfo.headString, logInfo.msg, logTime)
-        LogUtil.write2file(logInfo.tag, file, fileName, logInfo.headString, msg)
+        LogUtil.write2file(logInfo.tag, file, fileName, logInfo.headString, "$msg\n")
     }
 }

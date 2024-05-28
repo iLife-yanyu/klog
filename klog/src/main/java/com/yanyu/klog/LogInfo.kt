@@ -1,5 +1,8 @@
 package com.yanyu.klog
 
+import android.text.TextUtils
+import com.yanyu.klog.config.ConsoleConfig
+
 internal class LogInfo private constructor(val tag: String, val msg: String, val headString: String) {
 
     companion object {
@@ -47,6 +50,21 @@ internal class LogInfo private constructor(val tag: String, val msg: String, val
             }
             else {
                 NULL
+            }
+        }
+
+        private fun ConsoleConfig?.getTag(tag: String): String {
+            if (this == null) {
+                return tag
+            }
+            return if (disablePrefixTag && TextUtils.isEmpty(tag)) {
+                defaultTag
+            }
+            else if (!disablePrefixTag) {
+                prefixTag!!
+            }
+            else {
+                tag
             }
         }
     }
