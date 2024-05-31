@@ -33,7 +33,7 @@ internal class LogInfo private constructor(val tag: String, val msg: String, val
             return LogInfo(tag, msg, headString)
         }
 
-        fun getJavaOrKt(clazz: Class<Any>): String {
+        fun getJavaOrKt(clazz: Class<out Any>): String {
             val annotations = clazz.annotations
             for (annotation in annotations) {
                 val toString = annotation.toString()

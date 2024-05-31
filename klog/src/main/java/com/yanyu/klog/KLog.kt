@@ -198,7 +198,7 @@ object KLog {
     }
 
     @JvmStatic
-    fun extendLog(clazz: Class<Any>) {
+    fun extendLog(clazz: Class<out Any>) {
         if (config?.ableLogFile(LogLevel.EXTEND) != true) {
             return
         }
