@@ -1,7 +1,7 @@
-package com.yanyu.klog
+package com.yanyu.libs.klog
 
 import android.text.TextUtils
-import com.yanyu.klog.config.ConsoleConfig
+import com.yanyu.libs.klog.config.ConsoleConfig
 
 internal class LogInfo private constructor(val tag: String, val msg: String, val headString: String) {
 

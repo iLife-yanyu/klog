@@ -1,9 +1,8 @@
-package com.yanyu.klog
+package com.yanyu.libs.klog
 
 import android.content.Context
-import com.yanyu.klog.config.ConsoleConfig
-import com.yanyu.klog.config.FileConfig
-import com.yanyu.klog.config.LogLevel
+import com.yanyu.libs.klog.config.ConsoleConfig
+import com.yanyu.libs.klog.config.FileConfig
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -26,6 +25,7 @@ object KLog {
      * @param deleteTask  删除指定时间节点前的文件
      */
     @JvmStatic
+    @JvmOverloads
     fun init(console: ConsoleConfig, file: FileConfig? = null, deleteTask: DeleteLogsTask? = null) {
         this.config = console
         this.fileConfig = file
@@ -316,8 +316,8 @@ object KLog {
         // fileDirs = /data/user/0/yourPackageName/files
         return mkdirs("$fileDirs/klogs")
     }
-}
 
-private fun ConsoleConfig?.iGetDefaultMessage(): String {
-    return this?.defaultMessage ?: ""
+    private fun ConsoleConfig?.iGetDefaultMessage(): String {
+        return this?.defaultMessage ?: ""
+    }
 }

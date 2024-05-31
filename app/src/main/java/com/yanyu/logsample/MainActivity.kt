@@ -3,7 +3,7 @@ package com.yanyu.logsample
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import com.yanyu.klog.KLog
+import com.yanyu.libs.klog.KLog
 import com.yanyu.logsample.base.BaseActivity
 import com.yanyu.logsample.databinding.ActivityMainBinding
 import com.yanyu.logsample.ui.AdvanceActivity

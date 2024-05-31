@@ -1,8 +1,8 @@
 package com.yanyu.logsample
 
 import android.app.Application
-import com.yanyu.klog.DeleteLogsTask
-import com.yanyu.klog.KLog
+import com.yanyu.libs.klog.DeleteLogsTask
+import com.yanyu.libs.klog.KLog
 import com.yanyu.logsample.config.ConsoleConfigImpl
 import com.yanyu.logsample.config.FileConfigImpl
 

@@ -6,7 +6,7 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import com.yanyu.klog.KLog
+import com.yanyu.libs.klog.KLog
 import com.yanyu.logsample.R
 import com.yanyu.logsample.base.BaseActivity
 import com.yanyu.logsample.databinding.ActivityAdvanceBinding

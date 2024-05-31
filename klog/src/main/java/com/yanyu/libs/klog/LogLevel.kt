@@ -1,4 +1,4 @@
-package com.yanyu.klog.config
+package com.yanyu.libs.klog
 
 object LogLevel {
 

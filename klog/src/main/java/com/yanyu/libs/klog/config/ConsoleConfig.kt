@@ -1,6 +1,6 @@
-package com.yanyu.klog.config
+package com.yanyu.libs.klog.config
 
-import com.yanyu.klog.KLog
+import com.yanyu.libs.klog.KLog
 
 @Suppress("unused")
 abstract class ConsoleConfig(internal val prefixTag: String? = null) : AbstractConfig() {

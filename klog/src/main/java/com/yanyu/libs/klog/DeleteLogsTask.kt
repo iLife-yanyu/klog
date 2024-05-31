@@ -1,11 +1,11 @@
-package com.yanyu.klog
+package com.yanyu.libs.klog
 
 import java.io.File
 
 /**
  * 删除指定路径下的 days 天前的日志文件，默认3天前
  */
-class DeleteLogsTask(private val logPath: String, days: Int = 3) : Runnable {
+class DeleteLogsTask @JvmOverloads constructor(private val logPath: String, days: Int = 3) : Runnable {
 
     private val threshold: Long
     private val sysTime = System.currentTimeMillis()

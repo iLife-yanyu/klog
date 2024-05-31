@@ -11,7 +11,7 @@ ext {
 }
 
 android {
-    namespace GROUP_ID
+    namespace "com.yanyu.libs.klog"
     compileSdk target_sdk
 
     defaultConfig {

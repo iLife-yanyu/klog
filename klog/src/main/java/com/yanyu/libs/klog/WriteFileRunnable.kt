@@ -1,6 +1,6 @@
-package com.yanyu.klog
+package com.yanyu.libs.klog
 
-import com.yanyu.klog.config.FileConfig
+import com.yanyu.libs.klog.config.FileConfig
 import java.io.File
 import java.util.Date
 

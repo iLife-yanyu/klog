@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.yanyu.klog.KLog
+import com.yanyu.libs.klog.KLog
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), UIOpt<VB> {
 

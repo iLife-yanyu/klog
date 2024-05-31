@@ -1,6 +1,6 @@
-package com.yanyu.klog.config
+package com.yanyu.libs.klog.config
 
-import com.yanyu.klog.LogImpl
+import com.yanyu.libs.klog.LogImpl
 
 abstract class AbstractConfig constructor() {
 

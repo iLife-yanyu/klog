@@ -1,9 +1,10 @@
-package com.yanyu.klog.config
+package com.yanyu.libs.klog.config
 
 import android.annotation.SuppressLint
-import com.yanyu.klog.LogImpl
-import com.yanyu.klog.LogInfo
-import com.yanyu.klog.WriteFileRunnable
+import com.yanyu.libs.klog.LogImpl
+import com.yanyu.libs.klog.LogInfo
+import com.yanyu.libs.klog.LogLevel
+import com.yanyu.libs.klog.WriteFileRunnable
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.concurrent.ExecutorService

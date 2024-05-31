@@ -1,7 +1,6 @@
-package com.yanyu.klog
+package com.yanyu.libs.klog
 
 import android.util.Log
-import com.yanyu.klog.config.LogLevel
 
 internal enum class LogImpl(val level: Int) {
 
