@@ -17,7 +17,7 @@ object KLog {
     @JvmStatic
     private var fileConfig: FileConfig? = null
     private const val STACK_TRACE_INDEX_5 = 5
-    private const val STACK_TRACE_INDEX_4 = 4
+    private const val STACK_TRACE_INDEX_3 = 3
 
     /**
      * @param console   日志控制台的配置，不能为空
@@ -215,11 +215,6 @@ object KLog {
 
     @JvmStatic
     fun trace() {
-        printStackTrace()
-    }
-
-    @JvmStatic
-    private fun printStackTrace() {
         val tr = Throwable()
         val sw = StringWriter()
         val pw = PrintWriter(sw)
@@ -230,12 +225,12 @@ object KLog {
         val sb = StringBuilder()
         sb.append("\n")
         for (trace in traceString) {
-            if (trace.contains("com.socks.library.KLog")) {
+            if (trace.contains("com.yanyu.libs.klog")) {
                 continue
             }
             sb.append(trace).append("\n")
         }
-        val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_4, null, sb.toString())
+        val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_3, null, sb.toString())
         LogImpl.D.log(logInfo)
     }
 
