@@ -10,7 +10,7 @@ import java.util.Date
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-abstract class FileConfig constructor(val logDirectory: String) : AbstractConfig() {
+abstract class FileConfig @JvmOverloads constructor(val logDirectory: String, private var firstLogOfEveryDay: String? = null) : AbstractConfig() {
 
     private val executor: ExecutorService by lazy(LazyThreadSafetyMode.NONE) { newSingleThreadExecutor() }
     private val nameFormat: SimpleDateFormat by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { getFileNameFormat() }
@@ -48,6 +48,20 @@ abstract class FileConfig constructor(val logDirectory: String) : AbstractConfig
 
     internal fun log2file(level: LogImpl, logInfo: LogInfo, fileName: String? = null) {
         executor.execute(WriteFileRunnable(this, level, logInfo, fileName))
+    }
+
+    internal fun wrapLogEveryDay(): String {
+        var info = firstLogOfEveryDay
+        if (info == null) {
+            info = "new log file to create"
+        }
+        else {
+            firstLogOfEveryDay = null
+            if (info.isEmpty() || info.isBlank()) {
+                info = "new log file to create"
+            }
+        }
+        return info
     }
 
     open fun encapsulationFileName(logTime: Date): String {

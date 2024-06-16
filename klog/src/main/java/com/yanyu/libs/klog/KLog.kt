@@ -21,15 +21,22 @@ object KLog {
 
     /**
      * @param console   日志控制台的配置，不能为空
-     * @param file      日志文件的配置，可以为空
+     * @param fileConfig      日志文件的配置，可以为空
      * @param deleteTask  删除指定时间节点前的文件
      */
     @JvmStatic
     @JvmOverloads
-    fun init(console: ConsoleConfig, file: FileConfig? = null, deleteTask: DeleteLogsTask? = null) {
+    fun init(console: ConsoleConfig, fileConfig: FileConfig? = null, deleteTask: DeleteLogsTask? = null) {
         this.config = console
-        this.fileConfig = file
+        this.fileConfig = fileConfig
         deleteTask?.start()
+        if (fileConfig != null) {
+            val todayLog = getLogFileToday()
+            if (todayLog == null || !todayLog.exists() || todayLog.length() == 0L) {
+                val info: String = fileConfig.wrapLogEveryDay()
+                fileConfig.log2file(LogImpl.F, LogInfo.newInstance(2, "LogFileConfig", info))
+            }
+        }
     }
 
     @JvmStatic
