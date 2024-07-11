@@ -3,7 +3,7 @@ package com.yanyu.libs.klog
 import android.text.TextUtils
 import com.yanyu.libs.klog.config.ConsoleConfig
 
-internal class LogInfo private constructor(val tag: String, val msg: String, val headString: String) {
+internal class LogInfo private constructor(var tag: String, val msg: String, val headString: String) {
 
     fun withLogInfo(): String {
         return headString + msg

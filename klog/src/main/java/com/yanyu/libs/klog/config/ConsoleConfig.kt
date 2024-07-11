@@ -22,4 +22,8 @@ abstract class ConsoleConfig(internal val prefixTag: String? = null) : AbstractC
     open fun configJsonIndent(): Int {
         return 4
     }
+
+    open fun extendLogTag(): String {
+        return "extendLog"
+    }
 }

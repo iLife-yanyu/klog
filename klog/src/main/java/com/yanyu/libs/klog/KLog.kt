@@ -17,6 +17,7 @@ object KLog {
     @JvmStatic
     private var fileConfig: FileConfig? = null
     private const val STACK_TRACE_INDEX_5 = 5
+    private const val STACK_TRACE_INDEX_4 = 4
     private const val STACK_TRACE_INDEX_3 = 3
 
     /**
@@ -209,8 +210,11 @@ object KLog {
         if (config?.ableLogFile(LogLevel.EXTEND) != true) {
             return
         }
-        val msg = "[ (" + clazz.getSimpleName() + LogInfo.getJavaOrKt(clazz) + ":1) ] extends "
-        printLog(LogImpl.EXTEND, "extendLog", msg)
+        val msg = "[ (" + clazz.simpleName + LogInfo.getJavaOrKt(clazz) + ":1) ] extends "
+        val level = LogImpl.EXTEND
+        val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_4, null, msg)
+        logInfo.tag = config!!.extendLogTag()
+        logImpl(level, logInfo)
     }
 
     @JvmStatic
@@ -234,15 +238,19 @@ object KLog {
         LogImpl.D.log(logInfo)
     }
 
+    private fun logImpl(level: LogImpl, logInfo: LogInfo) {
+        level.log(logInfo)
+        val fileConfig = fileConfig ?: return
+        if (fileConfig.ableLogFile(level.level)) {
+            fileConfig.log2file(level, logInfo)
+        }
+    }
+
     @JvmStatic
     private fun printLog(level: LogImpl, tagStr: String?, vararg objects: Any) {
         if (config?.ableLogFile(level.level) == true) {
             val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_5, tagStr, *objects)
-            level.log(logInfo)
-            val fileConfig = fileConfig ?: return
-            if (fileConfig.ableLogFile(level.level)) {
-                fileConfig.log2file(level, logInfo)
-            }
+            logImpl(level, logInfo)
         }
         else {
             val fileConfig = fileConfig ?: return
