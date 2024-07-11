@@ -23,7 +23,7 @@ abstract class ConsoleConfig(internal val prefixTag: String? = null) : AbstractC
         return 4
     }
 
-    open fun extendLogTag(): String {
-        return "extendLog"
+    open fun getExtendLogOfTag(): String {
+        return "TagExtendLog"
     }
 }

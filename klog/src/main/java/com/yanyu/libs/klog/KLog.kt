@@ -14,6 +14,7 @@ object KLog {
 
     @JvmStatic
     internal var config: ConsoleConfig? = null
+
     @JvmStatic
     private var fileConfig: FileConfig? = null
     private const val STACK_TRACE_INDEX_5 = 5
@@ -213,7 +214,7 @@ object KLog {
         val msg = "[ (" + clazz.simpleName + LogInfo.getJavaOrKt(clazz) + ":1) ] extends "
         val level = LogImpl.EXTEND
         val logInfo = LogInfo.newInstance(STACK_TRACE_INDEX_4, null, msg)
-        logInfo.tag = config!!.extendLogTag()
+        logInfo.tag = config?.getExtendLogOfTag() ?: "TagExtendLog"
         logImpl(level, logInfo)
     }
 
