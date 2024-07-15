@@ -19,18 +19,24 @@ internal class LogInfo private constructor(var tag: String, val msg: String, val
         private const val NULL = "null"
 
         fun newInstance(traceIndex: Int, tagStr: String?, vararg objects: Any): LogInfo {
-            val stackTrace = Thread.currentThread().stackTrace
-            val targetElement = stackTrace[traceIndex]
-            val fileName = targetElement.fileName
-            val methodName = targetElement.methodName
-            var lineNumber = targetElement.lineNumber
-            if (lineNumber < 0) {
-                lineNumber = 0
+            try {
+                val stackTrace = Thread.currentThread().stackTrace
+                val targetElement = stackTrace[traceIndex]
+                val fileName = targetElement?.fileName ?: ""
+                val methodName = targetElement?.methodName ?: ""
+                var lineNumber = targetElement?.lineNumber ?: 0
+                if (lineNumber < 0) {
+                    lineNumber = 0
+                }
+                val tag = KLog.config?.getTag(tagStr ?: fileName) ?: ""
+                val msg = getObjectsString(*objects)
+                val headString = "[ ($fileName:$lineNumber)#$methodName ] "
+                return LogInfo(tag, msg, headString)
             }
-            val tag = KLog.config?.getTag(tagStr ?: fileName) ?: ""
-            val msg = getObjectsString(*objects)
-            val headString = "[ ($fileName:$lineNumber)#$methodName ] "
-            return LogInfo(tag, msg, headString)
+            catch (e: Exception) {
+                LogImpl.E.logImpl("KLog", "inner exception by LogInfo.newInstance $e")
+                return LogInfo("KLogException", "$e", "LogInfo.newInstance")
+            }
         }
 
         fun getJavaOrKt(clazz: Class<out Any>): String {
